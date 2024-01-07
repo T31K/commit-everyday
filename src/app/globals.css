@@ -16,12 +16,24 @@
   }
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+main {
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
+}
+@media (min-width: 768px) {
+  main {
+    width: 750px;
+  }
+}
+@media (min-width: 992px) {
+  main {
+    width: 970px;
+  }
+}
+@media (min-width: 1200px) {
+  main {
+    width: 1170px;
+  }
 }
