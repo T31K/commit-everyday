@@ -7,27 +7,36 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { useState } from 'react';
 
 function AlertModal({ openModal, setOpenModal }) {
+  const [inputData, setInputData] = useState('');
+
+  const submitForm = () => {
+    window.location.href = `/${inputData}`;
+  };
+
   return (
     <AlertDialog
       open={openModal}
       onOpenChange={setOpenModal}
     >
-      <AlertDialogTrigger>Open</AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>User you absolutely sure?</AlertDialogTitle>
+          <AlertDialogTitle>Enter username</AlertDialogTitle>
           <AlertDialogDescription>
-            This action cannot be undone. This will permanently delete your account and remove your data from our
-            servers.
+            <Input
+              type="text"
+              value={inputData} // Connect the value prop to the state
+              onChange={(e) => setInputData(e.target.value)}
+            />
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction>Continue</AlertDialogAction>
+          <Button onClick={submitForm}>Go</Button>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
