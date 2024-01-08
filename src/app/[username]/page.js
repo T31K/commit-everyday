@@ -59,13 +59,17 @@ export default function Home() {
 
   async function getData(username) {
     try {
-      const res = await axios.get(`https://github-contributions-api.jogruber.de/v4/${username}?y=2024`);
+      const res = await axios.get(`https://github-contributions-api.jogruber.de/v4${username}?y=2024`);
       setContributionsData(res.data);
     } catch (error) {
       console.error('Failed to fetch data:', error);
       // Handle errors as needed
     }
   }
+
+  useEffect(() => {
+    if (pathname) getData(pathname);
+  }, [pathname]);
 
   function convertToDailyChartData() {
     let chartOutput = [];
@@ -164,17 +168,19 @@ export default function Home() {
 
       // Calculate median
       allCounts.sort((a, b) => a - b);
-      let median;
-      const mid = Math.floor(allCounts.length / 2);
-      if (allCounts.length % 2 === 0) {
-        // Average of two middle numbers for even length array
-        median = (allCounts[mid - 1] + allCounts[mid]) / 2;
-      } else {
-        // Middle number for odd length array
-        median = allCounts[mid];
+      let median = 0;
+      let mean = 0;
+
+      if (allCounts.length > 0) {
+        const mid = Math.floor(allCounts.length / 2);
+        median = allCounts.length % 2 !== 0 ? allCounts[mid] : (allCounts[mid - 1] + allCounts[mid]) / 2;
+
+        // Calculate the mean (average)
+        const total = allCounts.reduce((acc, val) => acc + val, 0);
+        mean = total / allCounts.length;
       }
 
-      setStats({ streak, highest, median });
+      setStats({ streak, highest, median, mean });
     }
   }, [contributionsData]);
   useEffect(() => {
@@ -183,12 +189,11 @@ export default function Home() {
 
   return (
     <main className="py-12">
-      Current pathname: {pathname}
       <div className="flex flex-col gap-4">
         <div className="grid grid-cols-1 gap-4">
           <div className="bg-gray-100 border-[1.4px] border-gray-200 h-[60px] rounded-xl flex flex-col gap-3 items-center justify-center">
             <div className="p-6 max-w-sm rounded-lg flex flex-col gap-2 items-center justify-center">
-              <p className="text-sm font-semibold tracking-wide  text-gray-600">T31K</p>
+              <p className="text-sm font-semibold tracking-wide  text-gray-600">{pathname.substring(1)}</p>
             </div>
           </div>{' '}
         </div>
@@ -221,7 +226,7 @@ export default function Home() {
           <div className="bg-gray-100 border-[1.4px] border-gray-200 h-[220px] rounded-xl flex flex-col gap-3 items-center justify-center">
             <div className="p-6 max-w-sm rounded-lg flex flex-col gap-2 items-center justify-center">
               <p className="text-sm font-semibold tracking-wide  text-gray-600">Average</p>
-              <h3 className="text-7xl font-extrabold text-blue-400">{stats?.median}</h3>
+              <h3 className="text-7xl font-extrabold text-blue-400">{`${stats?.median}`}</h3>
               <p className="text-sm font-semibold text-gray-600">commits per day</p>
             </div>
           </div>
