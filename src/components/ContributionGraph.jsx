@@ -1,13 +1,15 @@
-const ContributionGraph = ({ contributionsData }) => {
-  const colorClasses = [
-    'bg-gray-200', // 0 contributions
-    'bg-blue-200', // 1-4 contributions
-    'bg-blue-400', // 5-10 contributions
-    'bg-blue-600', // 11-20 contributions
-    'bg-blue-800', // 21+ contributions
-  ];
+import { tailwindColors } from '@/lib/colors';
+const ContributionGraph = ({ contributionsData, activeColor }) => {
+  const getColor = (activeColor, count) => {
+    if (count === 0) return '#e5e7eb'; // bg-gray-200
+    if (count <= 4) return tailwindColors[activeColor][200];
+    if (count <= 10) return tailwindColors[activeColor][400];
+    if (count <= 20) return tailwindColors[activeColor][600];
+    return tailwindColors[activeColor][800];
+  };
 
-  if (!contributionsData.contributions) return;
+  if (!contributionsData?.contributions) return null;
+
   // Create an array to hold the start offsets for each day of the week
   const startOffsets = {
     0: 0, // Sunday
@@ -35,17 +37,11 @@ const ContributionGraph = ({ contributionsData }) => {
 
   // Render the contribution squares
   const contributionSquaresRender = contributionsData?.contributions?.map((day, dayIndex) => {
-    let colorClass;
-    if (day.count === 0) colorClass = colorClasses[0];
-    else if (day.count <= 4) colorClass = colorClasses[1];
-    else if (day.count <= 10) colorClass = colorClasses[2];
-    else if (day.count <= 20) colorClass = colorClasses[3];
-    else colorClass = colorClasses[4];
-
+    const color = getColor(activeColor, day.count);
     return (
       <div
         key={dayIndex}
-        className={`w-4 h-4 rounded-[5.5px] ${colorClass}`}
+        style={{ backgroundColor: color, width: '16px', height: '16px', borderRadius: '5.5px' }}
       ></div>
     );
   });
