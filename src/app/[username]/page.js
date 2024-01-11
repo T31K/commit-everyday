@@ -377,9 +377,17 @@ export default function Home() {
   );
 }
 
-// move data to api call from server
-// on load get the url check if its valid
-// count the streak
+// use github api to pull data
+// weekend activity
+// languages distribution
+// top repos
+// contribution type (radar chart)
+// distribution by time
+// distribution by day
+// share gifs
 
-// screenshot share
-// color scheme dark mode
+// premium features
+// custom color schemes
+// daily reminder any time
+// custom reports monthly
+// profile badge
