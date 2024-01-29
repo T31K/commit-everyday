@@ -119,7 +119,6 @@ export default function Home() {
     }
     return userRankIndex; // Return the index of the user's rank
   }
-
   function getThisWeek(contributionsData) {
     // Calculate the index range for the active week
     const startIndex = activeWeek * 7;
@@ -161,6 +160,66 @@ export default function Home() {
       if (error.code == 'ERR_BAD_REQUEST') {
         toast("User doesn't exist. Try again!");
       }
+    }
+  }
+
+  async function redirectToGitHub() {
+    const clientID = '6bcd19cd59ef5781a8fa';
+    const redirectUri = 'https://api.getharmonize.app/commiteveryday/auth_success';
+    const scope = 'read:user';
+    window.location.href = `https://github.com/login/oauth/authorize?client_id=${clientID}&redirect_uri=${encodeURIComponent(
+      redirectUri
+    )}&scope=${encodeURIComponent(scope)}`;
+  }
+
+  async function fetchTopLanguages() {
+    let accessToken = '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';
+    try {
+      const reposRes = await axios.get('https://api.github.com/user/repos', {
+        headers: {
+          Authorization: `token ${accessToken}`,
+        },
+      });
+
+      let languageStats = {};
+
+      for (const repo of reposRes.data) {
+        const languagesRes = await axios.get(
+          `https://api.github.com/repos/${repo.owner.login}/${repo.name}/languages`,
+          {
+            headers: {
+              Authorization: `token ${accessToken}`,
+            },
+          }
+        );
+
+        for (const [language, bytes] of Object.entries(languagesRes.data)) {
+          languageStats[language] = (languageStats[language] || 0) + bytes;
+        }
+      }
+
+      const totalBytes = Object.values(languageStats).reduce((sum, bytes) => sum + bytes, 0);
+
+      let sortedLanguages = Object.entries(languageStats)
+        .map(([language, bytes]) => ({ language, bytes }))
+        .sort((a, b) => b.bytes - a.bytes);
+
+      let topLanguages = sortedLanguages.slice(0, 5);
+      let others = sortedLanguages.slice(5).reduce((sum, lang) => sum + lang.bytes, 0);
+
+      if (others > 0) {
+        topLanguages.push({ language: 'Others', bytes: others });
+      }
+
+      let languageDistribution = topLanguages.reduce((obj, lang) => {
+        obj[lang.language] = ((lang.bytes / totalBytes) * 100).toFixed(2) + '%';
+        return obj;
+      }, {});
+      console.log(languageDistribution);
+      return languageDistribution;
+    } catch (error) {
+      console.error('Error fetching language distribution:', error.message);
+      return null;
     }
   }
 
@@ -214,9 +273,10 @@ export default function Home() {
             </Select>
             <div className="p-6 rounded-lg flex flex gap-2 items-center justify-center">
               <p className="text-sm font-semibold tracking-wide  text-gray-600">{pathname.substring(1)}</p>
-              <a
-                href={`https://github.com${pathname}`}
-                target="_blank"
+              <div
+                // href={`https://github.com${pathname}`}
+                // target="_blank"
+                onClick={fetchTopLanguages}
               >
                 <IconUserSquareRounded
                   size={24}
@@ -224,7 +284,7 @@ export default function Home() {
                   className="hover:cursor-pointer mr-1"
                   stroke="2"
                 />
-              </a>
+              </div>
             </div>
             <ColorPicker
               activeColor={activeColor}
@@ -391,3 +451,4 @@ export default function Home() {
 // daily reminder any time
 // custom reports monthly
 // profile badge
+// current streak, longest streak, weekend

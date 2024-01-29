@@ -213,9 +213,10 @@ export default function Home() {
             </Select>
             <div className="p-6 rounded-lg flex flex gap-2 items-center justify-center">
               <p className="text-sm font-semibold tracking-wide  text-gray-600">{pathname.substring(1)}</p>
-              <a
-                href={`https://github.com${pathname}`}
+              <div
+                // href={`https://github.com${pathname}`}
                 target="_blank"
+                // onClick={redirectToGitHub}
               >
                 <IconUserSquareRounded
                   size={24}
@@ -223,7 +224,7 @@ export default function Home() {
                   className="hover:cursor-pointer mr-1"
                   stroke="2"
                 />
-              </a>
+              </div>
             </div>
             <ColorPicker
               activeColor={activeColor}
