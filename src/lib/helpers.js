@@ -1,3 +1,5 @@
+import moment from 'moment';
+import { levels } from './raw';
 function getTotal(contributionsData) {
   let total = 0;
 
@@ -6,6 +8,21 @@ function getTotal(contributionsData) {
   });
 
   return total;
+}
+
+function getMedian(contributionsData) {
+  let totalContributions = 0;
+  let totalDaysWithContributions = 0;
+
+  contributionsData?.contributions?.forEach((contribution) => {
+    totalContributions += contribution.count;
+    if (contribution.count > 0) {
+      totalDaysWithContributions++;
+    }
+  });
+
+  let median = totalDaysWithContributions > 0 ? totalContributions / totalDaysWithContributions : 0;
+  return median;
 }
 
 function getStreak(contributionsData) {
@@ -57,7 +74,7 @@ function getMissedDays(contributionsData) {
 
   return missedDaysCount;
 }
-function getWeeklyBarChart(contributionsData) {
+function processWeeklyBarChart(contributionsData) {
   // Initialize sums for each day of the week
   const daySums = {
     Monday: 0,
@@ -86,46 +103,99 @@ function getWeeklyBarChart(contributionsData) {
   return barChartData;
 }
 
-function getScore(highest, median, streak, total, missedDays, mostActiveDay) {
-  // Convert mostActiveDay to a number (Monday = 1, ..., Sunday = 7)
-  const daysMap = {
-    Monday: 1,
-    Tuesday: 2,
-    Wednesday: 3,
-    Thursday: 4,
-    Friday: 5,
-    Saturday: 6,
-    Sunday: 7,
-  };
-  const numericDay = daysMap[mostActiveDay];
+function getHighest(contributionsData) {
+  let highest = 0;
 
-  // Define weights
-  const weights = {
-    highest: 0.05, // Reduced weight for the 'highest' attribute
-    median: 0.2, // Increased weight for the 'median' attribute
-    streak: 0.2, // Weight for the 'streak' attribute
-    total: 0.25, // Increased weight for the 'total' attribute
-    missedDays: -0.2, // Negative weight for 'missedDays'
-    weekday: 0.1, // Weight for weekdays in 'mostActiveDay'
-    weekend: 0.15, // Higher weight for weekends in 'mostActiveDay'
-  };
+  contributionsData?.contributions?.forEach((contribution) => {
+    if (contribution.count > highest) highest = contribution.count;
+  });
 
-  // Apply a logarithmic transformation to 'highest' to reduce its impact
-  const normalizedHighest = Math.log(highest + 1);
-
-  // Determine the weight for mostActiveDay based on whether it's a weekday or weekend
-  const dayWeight = numericDay >= 1 && numericDay <= 5 ? weights.weekday : weights.weekend;
-
-  // Calculate the score
-  const score =
-    normalizedHighest * weights.highest +
-    median * weights.median +
-    streak * weights.streak +
-    total * weights.total -
-    missedDays * weights.missedDays +
-    numericDay * dayWeight;
-
-  return score;
+  return highest;
 }
 
-export { getTotal, getStreak, getMostActiveDay, getMissedDays, getWeeklyBarChart, getScore };
+function getLevel(username) {
+  let sum = 0;
+
+  for (let char of username) {
+    sum += char.charCodeAt(0);
+  }
+
+  let num = sum % 51;
+  return levels[num];
+}
+function processMonthlyChart(contributionsData) {
+  const numberOfDaysInJanuary = 31;
+
+  const monthlyContributions = contributionsData?.contributions
+    ?.slice(0, numberOfDaysInJanuary)
+    .map((contribution, index) => {
+      // Convert day number to a date in January using moment.js
+      const dateOfMonth = moment('2024-01-01').add(index, 'days').format('MMMM Do');
+
+      // Format the data suitable for an area chart
+      return {
+        name: dateOfMonth, // Use the date of the month as the name
+        count: contribution.count,
+      };
+    });
+
+  // If the month is not complete (less than 31 days), fill in the remaining days
+  while (monthlyContributions?.length < numberOfDaysInJanuary) {
+    const dateOfMonth = moment('2024-01-01').add(monthlyContributions.length, 'days').format('MMMM Do');
+    monthlyContributions.push({ name: dateOfMonth, count: 0 });
+  }
+
+  return monthlyContributions;
+}
+
+function generateRank(contributionsData) {
+  // Define weights for each criterion
+  const weights = {
+    total: 0.2,
+    consistency: 0.2,
+    streak: 0.2,
+    median: 0.2,
+    activitySpread: 0.1,
+    weekendBonus: 0.1,
+  };
+
+  // Normalizing function for total contributions
+  const normalizeTotal = (total) => {
+    const averageRange = 90; // Midpoint of 80-100
+    return total / averageRange;
+  };
+
+  // Calculate normalized scores
+  let totalScore = Math.min(normalizeTotal(getTotal(contributionsData)), 1) * weights.total;
+  let consistencyScore = (getMedian(contributionsData) > 0 ? 1 : 0) * weights.consistency;
+  let streakScore = Math.min(getStreak(contributionsData) / 31, 1) * weights.streak; // Normalize to max 1
+  let medianScore = Math.min(getMedian(contributionsData) / 20, 1) * weights.median; // Assuming max median is around 20
+  let activitySpreadScore = (1 - getMissedDays(contributionsData) / 31) * weights.activitySpread;
+
+  // Apply weekend bonus
+  const mostActiveDay = getMostActiveDay(contributionsData);
+  const weekendDays = ['Saturday', 'Sunday'];
+  let weekendBonus = weekendDays.includes(mostActiveDay) ? weights.weekendBonus : 0;
+
+  // Calculate the final score
+  let finalScore = totalScore + consistencyScore + streakScore + medianScore + activitySpreadScore + weekendBonus;
+
+  // Map the score to a rank
+  let rank = Math.min(Math.ceil(finalScore * 50), 50); // Ensuring the rank does not exceed 50
+
+  if (rank == 0) return 1;
+  else return rank * 2;
+}
+
+export {
+  getHighest,
+  getTotal,
+  getMedian,
+  getStreak,
+  getLevel,
+  getMostActiveDay,
+  getMissedDays,
+  processMonthlyChart,
+  processWeeklyBarChart,
+  generateRank,
+};

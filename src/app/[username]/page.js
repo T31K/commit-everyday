@@ -29,10 +29,22 @@ import Knuckles from '@/components/slides/Knuckles';
 import Toriel from '@/components/slides/Toriel';
 import HeatMap from '@/components/slides/HeatMap';
 import Overall from '@/components/slides/Overall';
+import FinalRank from '@/components/slides/FinalRank';
 import Conclusion from '@/components/slides/Conclusion';
 import Share from '@/components/slides/Share';
 
-import { getMissedDays, getMostActiveDay, getStreak, getTotal, getWeeklyBarChart, getScore } from '@/lib/helpers';
+import {
+  getHighest,
+  getMissedDays,
+  getMedian,
+  getMostActiveDay,
+  getStreak,
+  getTotal,
+  getLevel,
+  processMonthlyChart,
+  processWeeklyBarChart,
+  generateRank,
+} from '@/lib/helpers';
 
 export default function Home() {
   const pathname = usePathname();
@@ -65,12 +77,13 @@ export default function Home() {
     let highest = getHighest(contributionsData);
     let median = getMedian(contributionsData);
     let streak = getStreak(contributionsData);
-    let monthlyChart = getThisMonth(contributionsData);
     let total = getTotal(contributionsData);
     let mostActiveDay = getMostActiveDay(contributionsData);
     let missedDays = getMissedDays(contributionsData);
-    let weeklyBar = getWeeklyBarChart(contributionsData);
-    let score = getScore(highest, median, streak, total, missedDays, mostActiveDay);
+    let monthlyChart = processMonthlyChart(contributionsData);
+    let weeklyBar = processWeeklyBarChart(contributionsData);
+    let level = getLevel(pathname);
+    let rank = generateRank(contributionsData);
 
     setStats({
       highest,
@@ -78,7 +91,8 @@ export default function Home() {
       streak,
       monthlyChart,
       total,
-      score,
+      rank,
+      level,
       mostActiveDay,
       missedDays,
       weeklyBar,
@@ -89,60 +103,12 @@ export default function Home() {
       streak,
       monthlyChart,
       total,
-      score,
+      rank,
+      level,
       mostActiveDay,
       missedDays,
       weeklyBar,
     });
-  }
-
-  function getMedian(contributionsData) {
-    let totalContributions = 0;
-    let totalDaysWithContributions = 0;
-
-    contributionsData?.contributions?.forEach((contribution) => {
-      totalContributions += contribution.count;
-      if (contribution.count > 0) {
-        totalDaysWithContributions++;
-      }
-    });
-
-    return totalDaysWithContributions > 0 ? totalContributions / totalDaysWithContributions : 0;
-  }
-
-  function getHighest(contributionsData) {
-    let highest = 0;
-
-    contributionsData?.contributions?.forEach((contribution) => {
-      if (contribution.count > highest) highest = contribution.count;
-    });
-
-    return highest;
-  }
-
-  function getThisMonth(contributionsData) {
-    const numberOfDaysInJanuary = 31;
-
-    const monthlyContributions = contributionsData?.contributions
-      ?.slice(0, numberOfDaysInJanuary)
-      .map((contribution, index) => {
-        // Convert day number to a date in January using moment.js
-        const dateOfMonth = moment('2024-01-01').add(index, 'days').format('MMMM Do');
-
-        // Format the data suitable for an area chart
-        return {
-          name: dateOfMonth, // Use the date of the month as the name
-          count: contribution.count,
-        };
-      });
-
-    // If the month is not complete (less than 31 days), fill in the remaining days
-    while (monthlyContributions?.length < numberOfDaysInJanuary) {
-      const dateOfMonth = moment('2024-01-01').add(monthlyContributions.length, 'days').format('MMMM Do');
-      monthlyContributions.push({ name: dateOfMonth, count: 0 });
-    }
-
-    return monthlyContributions;
   }
 
   async function getData(username, year = 2024) {
@@ -279,7 +245,10 @@ export default function Home() {
           <Toriel missedDaysCount={stats?.missedDays} />{' '}
         </SwiperSlide>
         <SwiperSlide>
-          <Overall score={stats?.score} />
+          <Overall rank={stats?.rank} />
+        </SwiperSlide>
+        <SwiperSlide>
+          <FinalRank levelData={stats?.level} />
         </SwiperSlide>
         <SwiperSlide>
           <Conclusion />

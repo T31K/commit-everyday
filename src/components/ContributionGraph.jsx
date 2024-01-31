@@ -31,7 +31,13 @@ const ContributionGraph = ({ contributionsData }) => {
   ));
 
   const contributionSquaresRender = contributionsData?.contributions?.map((day, dayIndex) => {
-    const color = getColor(activeColor, day.count);
+    // Check if the date is beyond January 31st
+    const date = new Date(day.date);
+    const isAfterJanuary = date.getMonth() > 0 || date.getDate() > 31;
+
+    // Determine the color based on the condition
+    const color = isAfterJanuary ? 'transparent' : getColor(activeColor, day.count);
+
     return (
       <div
         key={dayIndex}
@@ -39,6 +45,7 @@ const ContributionGraph = ({ contributionsData }) => {
       ></div>
     );
   });
+
 
   const allSquares = [...emptySquaresRender, ...contributionSquaresRender].slice(0,35)
 
