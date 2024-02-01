@@ -10,7 +10,7 @@ function HomePage() {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const res = await axios.get('https://api.getharmonize.app/commit_everyday/get_all_users');
+        const res = await axios.get(process.env.GET_ALL_USERS_URL);
 
         setUserData(res.data);
       } catch (error) {
