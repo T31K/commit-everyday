@@ -48,7 +48,7 @@ function Card({userData}) {
             </div>
             <div className="w-full border-[2.5px] border-violet-300 rounded-full flex gap-5 items-center px-3 py-1">
               <IconMoodSad size={16} color="white" />
-              <div className="text-sm text-white">Missed Days: {userData?.missed_days}</div>
+              <div className="text-sm text-white">Missed: {userData?.missed_days}</div>
             </div>
           </div>
         </div>
