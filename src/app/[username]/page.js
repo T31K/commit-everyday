@@ -12,8 +12,6 @@ import { EffectCards, Keyboard } from 'swiper/modules';
 import { useState, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 
-import { ranks } from '@/lib/raw';
-
 import Welcome from '@/components/slides/Welcome';
 import DonkeyKong from '@/components/slides/DonkeyKong';
 import FlyHigh from '@/components/slides/FlyHigh';
@@ -48,7 +46,6 @@ import {
 
 export default function Home() {
   const pathname = usePathname();
-  const [activeWeek, setActiveWeek] = useState(0);
   const [contributionsData, setContributionsData] = useState([]);
 
   const [stats, setStats] = useState({ streak: 0, highest: 0, median: 0 });
@@ -254,7 +251,11 @@ export default function Home() {
           <Conclusion />
         </SwiperSlide>
         <SwiperSlide>
-          <Share />
+          <Share
+            stats={stats}
+            username={pathname}
+            levelData={stats?.level}
+          />
         </SwiperSlide>
       </Swiper>
     </>

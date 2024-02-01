@@ -51,7 +51,7 @@ function Mario({ activeSlide, targetNumber }) {
       </div>
       <div className='h-[95%] flex flex-col items-center justify-around pt-8'>
       <div className='text-[70px] text-red-600'>{commitCount}</div>
-      <div className='text-md mt-[-20px]'>commits</div>
+      <div className='text-md mt-[-20px]'>total commits</div>
           <Image src="/jumpman.gif" alt="JumpMan" width={250} height={250}  />
       </div>
     </section>
