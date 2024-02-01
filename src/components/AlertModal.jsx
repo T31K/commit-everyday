@@ -41,6 +41,8 @@ const handleSubmit = async (e) => {
         setTimeout(() => {
           window.location.href ="/"
         }, 2000);
+      } else if (res.status == 204) {
+        toast("User already added!");
       }
     } catch (error) {
       console.error('Error adding user:', error);

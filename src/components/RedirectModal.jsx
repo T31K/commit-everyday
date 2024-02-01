@@ -7,7 +7,6 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
-import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useState } from 'react';
 import {
@@ -22,7 +21,6 @@ function RedirectModal({ openModal, setOpenModal }) {
     try {
       const response = await axios.get(`https://api.github.com/users/${username}`);
       if (response.status === 200) {
-        // If the username is valid, proceed to redirect
         window.location.href = `/${username}`;
       }
     } catch (error) {
@@ -60,9 +58,8 @@ function RedirectModal({ openModal, setOpenModal }) {
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter className='flex items-center gap-2'>
-            {errorMessage && <p className="text-red-500">{errorMessage}</p>}
-
-          <Button onClick={submitForm}>Go</Button>
+          {errorMessage && <p className="text-red-500">{errorMessage}</p>}
+          <button className="rounded-full bg-gray-200 px-4 py-2 hidden md:block hover:bg-gray-400"  onClick={submitForm}>Go!</button>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

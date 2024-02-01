@@ -12,13 +12,14 @@ function TopNav() {
         width={30}
         height={30}
         alt="Picture of the author"
+        className="cursor-pointer"
         onClick={() => window.location.href="/"}
       />
-      <div className="text-xl font-bold whitespace-nowrap">
+      <div className="text-xl font-bold whitespace-nowrap ml-2">
         Hall Of Fame
       </div>
-      <button className="rounded-full bg-gray-200 px-4 py-2 hidden md:block" onClick={() => setOpenModal(true)}>Add Yours</button>
-      <button className="rounded-full bg-gray-200 px-4 py-2 block md:hidden" onClick={() => setOpenModal(true)}>+</button>
+      <button className="rounded-full bg-gray-200 px-4 py-2 hidden md:block hover:bg-gray-400" onClick={() => setOpenModal(true)}>Add Yours</button>
+      <button className="rounded-full bg-gray-200 px-4 py-2 block md:hidden hover:bg-gray-400" onClick={() => setOpenModal(true)}>+</button>
     </div>
     <RedirectModal openModal={openModal} setOpenModal={setOpenModal}/>
     </>
