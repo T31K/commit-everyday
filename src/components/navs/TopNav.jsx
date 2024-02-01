@@ -31,8 +31,8 @@ function TopNav() {
       <div className="text-xl font-bold whitespace-nowrap ml-4">
         Hall Of Fame
       </div>
-      <div className="w-2/5 flex justify-end h-full gap-2">
-      <a href="https://t31labs.lemonsqueezy.com/checkout/buy/a8a84095-5ef9-4fc5-8e14-f14d5d844168?embed=1&discount=0" className="rounded-full bg-gray-200 px-4 py-2 hidden md:block hover:bg-gray-400">Get A Shiny Border</a>
+      <div className="w-2/5 flex justify-end h-full gap-1">
+      <a href="https://t31labs.lemonsqueezy.com/checkout/buy/a8a84095-5ef9-4fc5-8e14-f14d5d844168?embed=1&discount=0" className="rounded-full bg-gray-200 px-4 py-2 hidden md:block hover:bg-gray-400 lemonsqueezy-button">Get A Shiny Border</a>
       <button className="rounded-full bg-gray-200 px-4 py-2 hidden md:block hover:bg-gray-400" onClick={() => setOpenModal(true)}>Add Yours</button>
       <button className="rounded-full bg-gray-200 px-4 py-2 block md:hidden hover:bg-gray-400" onClick={() => setOpenModal(true)}>+</button>
     </div>
