@@ -47,7 +47,7 @@ function RedirectModal({ openModal, setOpenModal }) {
           <AlertDialogTitle></AlertDialogTitle>
           <AlertDialogDescription>
             <AlertDialogTitle className='flex justify-between'>
-            <div className='text-black mb-3'>Enter username</div>
+            <div className='text-black mb-3'>Enter Github username</div>
             <IconCircleX size={24} color="black" onClick={() => setOpenModal(false)} />
           </AlertDialogTitle>
             <Input
