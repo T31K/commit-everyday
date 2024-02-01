@@ -3,7 +3,7 @@ import axios from 'axios';
 import moment from 'moment';
 import { toast } from 'sonner';
 import { Swiper, SwiperSlide } from 'swiper/react';
-
+import '@/assets/styles/username.css';
 import 'swiper/css';
 import 'swiper/css/effect-cards';
 
@@ -30,6 +30,9 @@ import Overall from '@/components/slides/Overall';
 import FinalRank from '@/components/slides/FinalRank';
 import Conclusion from '@/components/slides/Conclusion';
 import Share from '@/components/slides/Share';
+
+import Header from '@/components/navs/Header';
+import Footer from '@/components/navs/Footer';
 
 import {
   getHighest,
@@ -121,6 +124,7 @@ export default function Home() {
 
   return (
     <>
+      <Header username={pathname} />
       <Swiper
         effect={'cards'}
         grabCursor={true}
@@ -235,7 +239,7 @@ export default function Home() {
           </section>
         </SwiperSlide> */}
 
-        <SwiperSlide className="p-5">
+        <SwiperSlide>
           <HeatMap contributionsData={contributionsData} />
         </SwiperSlide>
         <SwiperSlide>
@@ -258,6 +262,12 @@ export default function Home() {
           />
         </SwiperSlide>
       </Swiper>
+      <Footer
+        activeSlide={activeSlide}
+        stats={stats}
+        pathname={pathname}
+        levelData={stats?.level}
+      />
     </>
   );
 }

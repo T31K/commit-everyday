@@ -105,19 +105,16 @@
 body {
   font-family: 'Source Code Pro', monospace !important;
   display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
   align-items: center;
   justify-content: center;
   margin: 0;
-  overflow: hidden;
   padding: 0;
   background: #3d3b4e;
 }
 
-html,
-body {
-  position: relative;
-  height: 100%;
-}
+
 
 .swiper {
   width: 320px;
@@ -174,4 +171,106 @@ body {
 
 .blink {
   animation: blink 1s steps(1, start) infinite;
+}
+
+
+.bg-rainbow {
+  animation: rainbowCycle 5s infinite linear;
+
+}
+
+@keyframes rainbowCycle {
+  0% {
+    background-color: #e06c75;
+  }
+
+  /* Red */
+  14% {
+    background-color: #d19a66;
+  }
+
+  /* Orange */
+  28% {
+    background-color: #e5c07b;
+  }
+
+  /* Yellow */
+  42% {
+    background-color: #98c379;
+  }
+
+  /* Green */
+  57% {
+    background-color: #56b6c2;
+  }
+
+  /* Blue */
+  71% {
+    background-color: #61afef;
+  }
+
+  /* Indigo */
+  85% {
+    background-color: #c678dd;
+  }
+
+  /* Violet */
+  100% {
+    background-color: #e06c75;
+  }
+
+  /* Red */
+}
+
+
+
+.non-glowing-border{
+    border: 7px solid #282c34;
+
+}.glowing-border {
+  animation: rainbowBorder 4s infinite linear;
+
+}
+
+@keyframes rainbowBorder {
+  0% {
+    border: 7px solid #e06c75;
+  }
+
+  /* Red */
+  14% {
+    border: 7px solid #d19a66;
+  }
+
+  /* Orange */
+  28% {
+    border: 7px solid #e5c07b;
+  }
+
+  /* Yellow */
+  42% {
+    border: 7px solid #98c379;
+  }
+
+  /* Green */
+  57% {
+    border: 7px solid #56b6c2;
+  }
+
+  /* Blue */
+  71% {
+    border: 7px solid #61afef;
+  }
+
+  /* Indigo */
+  85% {
+    border: 7px solid #c678dd;
+  }
+
+  /* Violet */
+  100% {
+    border: 7px solid #e06c75;
+  }
+
+  /* Red */
 }
