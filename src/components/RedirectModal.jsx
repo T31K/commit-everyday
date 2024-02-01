@@ -59,7 +59,7 @@ function RedirectModal({ openModal, setOpenModal }) {
         </AlertDialogHeader>
         <AlertDialogFooter className='flex items-center gap-2'>
           {errorMessage && <p className="text-red-500">{errorMessage}</p>}
-          <button className="rounded-full bg-gray-200 px-4 py-2 hidden md:block hover:bg-gray-400"  onClick={submitForm}>Go!</button>
+          <button className="rounded-full bg-gray-200 px-4 py-2  hover:bg-gray-400"  onClick={submitForm}>Go!</button>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
