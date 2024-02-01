@@ -3,7 +3,6 @@ import axios from 'axios';
 import Card from '@/components/card/Card';
 import TopNav from '@/components/navs/TopNav';
 import { useState, useEffect } from 'react';
-
 function HomePage() {
   const [userData, setUserData] = useState(null);
 
