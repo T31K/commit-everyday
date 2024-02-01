@@ -16,7 +16,6 @@ import Share from './slides/Share';
 import {
   IconCircleX
 } from '@tabler/icons-react';
-import { Checkbox } from "@/components/ui/checkbox"
 
 function AlertModal({ openModal, setOpenModal, stats, pathname, levelData }) {
   const [inputData, setInputData] = useState('');
