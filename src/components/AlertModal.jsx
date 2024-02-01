@@ -59,9 +59,6 @@ const handleSubmit = async (e) => {
           <AlertDialogTitle className='flex justify-between'>Add your card to the wall of fame?
             <IconCircleX size={24} color="black" onClick={() => setOpenModal(false)} />
           </AlertDialogTitle>
-          <div className='flex items-center gap-2'>
-            <Checkbox onCheckedChange={val => setEnableGlow(val)}/>
-          </div>
           <div className="w-80 mx-auto py-6">
           <Share
             stats={stats}
