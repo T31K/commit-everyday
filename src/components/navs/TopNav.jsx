@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import RedirectModal from "../RedirectModal"
 import Image from 'next/image';
 import {
@@ -7,11 +7,18 @@ import {
 } from '@tabler/icons-react';
 
 function TopNav() {
+    useEffect(() => {
+    // Load the Lemon Squeezy script
+    const script = document.createElement('script');
+    script.src = "https://assets.lemonsqueezy.com/lemon.js";
+    script.defer = true;
+    document.body.appendChild(script);
+  }, []);
   const [openModal, setOpenModal] = useState(false)
   return (
       <>
     <div className='bg-slate-500 min-w-[150px] h-[60px] rounded-full flex gap-2 p-3 items-center justify-between px-6 mb-3'>
-      <div className="w-1/5 flex justify-start">
+      <div className="w-2/5 flex justify-start">
       <Image
         src="/logo.png"
         width={30}
@@ -24,7 +31,8 @@ function TopNav() {
       <div className="text-xl font-bold whitespace-nowrap ml-4">
         Hall Of Fame
       </div>
-      <div className="w-1/5 flex justify-end">
+      <div className="w-2/5 flex justify-end h-full gap-2">
+      <a href="https://t31labs.lemonsqueezy.com/checkout/buy/a8a84095-5ef9-4fc5-8e14-f14d5d844168?embed=1&discount=0" className="rounded-full bg-gray-200 px-4 py-2 hidden md:block hover:bg-gray-400">Get A Shiny Border</a>
       <button className="rounded-full bg-gray-200 px-4 py-2 hidden md:block hover:bg-gray-400" onClick={() => setOpenModal(true)}>Add Yours</button>
       <button className="rounded-full bg-gray-200 px-4 py-2 block md:hidden hover:bg-gray-400" onClick={() => setOpenModal(true)}>+</button>
     </div>
