@@ -25,7 +25,7 @@ function AlertModal({ openModal, setOpenModal, stats, pathname, levelData }) {
 const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post(process.env.ADD_USER_URL, {
+      const res = await axios.post(process.env.NEXT_PUBLIC_ADD_USER_URL, {
         premium: false,
         name: pathname?.slice(1),
         total: stats?.total,
