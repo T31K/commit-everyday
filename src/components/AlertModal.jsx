@@ -1,7 +1,5 @@
 import axios from 'axios'
 import { toast } from 'sonner';
-
-
 import {
   AlertDialog,
   AlertDialogContent,
@@ -21,7 +19,7 @@ function AlertModal({ openModal, setOpenModal, stats, pathname, levelData }) {
   const [inputData, setInputData] = useState('');
   const [enableGlow, setEnableGlow] = useState(false);
 
-const handleSubmit = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const res = await axios.post(process.env.NEXT_PUBLIC_ADD_USER_URL, {
@@ -33,12 +31,17 @@ const handleSubmit = async (e) => {
         rank: stats.rank,
         median: stats.median,
         missedDays: stats.missedDays,
-        image:levelData?.image
+        image: levelData?.image
+      }, {
+        headers: {
+          'Authorization': `Bearer ${process.env.NEXT_PUBLIC_AUTH_TOKEN}`
+        }
       });
+
       if (res.status === 200) {
         toast("User added, redirecting..");
         setTimeout(() => {
-          window.location.href ="/"
+          window.location.href = "/"
         }, 2000);
       } else if (res.status == 204) {
         toast("User already added!");
