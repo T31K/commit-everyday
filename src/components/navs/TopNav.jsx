@@ -4,16 +4,17 @@ import Image from 'next/image';
 import {
   IconArrowBigLeft,
   IconArrowBigRight,
+  IconBrandProducthunt
 } from '@tabler/icons-react';
 
 function TopNav() {
-    useEffect(() => {
-    // Load the Lemon Squeezy script
+  useEffect(() => {
     const script = document.createElement('script');
     script.src = "https://assets.lemonsqueezy.com/lemon.js";
     script.defer = true;
     document.body.appendChild(script);
   }, []);
+
   const [openModal, setOpenModal] = useState(false)
   return (
       <>
@@ -38,13 +39,17 @@ function TopNav() {
     </div>
     </div>
     <div className="flex items-center justify-center gap-4 mb-8">
-
-<IconArrowBigLeft size={16}  color='white'/>
-  <div className="text-center text-gray-300 text-lg font-bold whitespace-nowrap ">
-    January
-  </div>
-<IconArrowBigRight size={16} color='white' className="opacity-30" />
-
+      <div className="bg-gray-500  py-1 px-3 flex items-center justify-center rounded-full self-end opacity-0">
+        <IconBrandProducthunt size={16} color='white' className="opacity-30" />
+      </div>
+      <IconArrowBigLeft size={16}  color='white'/>
+        <div className="text-center text-gray-300 text-lg font-bold whitespace-nowrap ">
+          January
+        </div>
+      <IconArrowBigRight size={16} color='white' className="opacity-30" />
+      <a className="bg-gray-500  py-1 px-3 flex items-center justify-center rounded-full" href="https://producthunt.com/posts/commit-everyday" target="_blank">
+        <IconBrandProducthunt size={16} color='white' />
+      </a>
     </div>
     <RedirectModal openModal={openModal} setOpenModal={setOpenModal}/>
     </>
