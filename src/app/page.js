@@ -9,7 +9,11 @@ function HomePage() {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const res = await axios.get(process.env.NEXT_PUBLIC_GET_ALL_USERS_URL);
+        const res = await axios.get(process.env.NEXT_PUBLIC_GET_ALL_USERS_URL, {
+          headers: {
+            Authorization: `Bearer ${process.env.NEXT_PUBLIC_AUTH_TOKEN}`,
+          },
+        });
 
         setUserData(res.data);
       } catch (error) {
