@@ -27,12 +27,14 @@ function HomePage() {
     >
       <TopNav />
       <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-        {userData?.map((user, userIndex) => (
-          <Card
-            key={userIndex}
-            userData={user}
-          />
-        ))}
+        {userData
+          ?.sort((a, b) => a.id - b.id)
+          ?.map((user, userIndex) => (
+            <Card
+              key={userIndex}
+              userData={user}
+            />
+          ))}
       </div>
     </div>
   );

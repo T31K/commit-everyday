@@ -225,7 +225,7 @@ body {
 
 
 .non-glowing-border{
-    border: 7px solid #282c34;
+    border: 5px solid #282c34;
 
 }.glowing-border {
   animation: rainbowBorder 4s infinite linear;
@@ -234,42 +234,42 @@ body {
 
 @keyframes rainbowBorder {
   0% {
-    border: 7px solid #e06c75;
+    border: 5px solid #e06c75;
   }
 
   /* Red */
   14% {
-    border: 7px solid #d19a66;
+    border: 5px solid #d19a66;
   }
 
   /* Orange */
   28% {
-    border: 7px solid #e5c07b;
+    border: 5px solid #e5c07b;
   }
 
   /* Yellow */
   42% {
-    border: 7px solid #98c379;
+    border: 5px solid #98c379;
   }
 
   /* Green */
   57% {
-    border: 7px solid #56b6c2;
+    border: 5px solid #56b6c2;
   }
 
   /* Blue */
   71% {
-    border: 7px solid #61afef;
+    border: 5px solid #61afef;
   }
 
   /* Indigo */
   85% {
-    border: 7px solid #c678dd;
+    border: 5px solid #c678dd;
   }
 
   /* Violet */
   100% {
-    border: 7px solid #e06c75;
+    border: 5px solid #e06c75;
   }
 
   /* Red */
