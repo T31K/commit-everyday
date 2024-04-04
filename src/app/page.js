@@ -3,19 +3,14 @@ import axios from 'axios';
 import Card from '@/components/card/Card';
 import TopNav from '@/components/navs/TopNav';
 import { useState, useEffect } from 'react';
+import { users } from '@/lib/raw';
 function HomePage() {
   const [userData, setUserData] = useState(null);
 
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const res = await axios.get(process.env.NEXT_PUBLIC_GET_ALL_USERS_URL, {
-          headers: {
-            Authorization: `Bearer ${process.env.NEXT_PUBLIC_AUTH_TOKEN}`,
-          },
-        });
-
-        setUserData(res.data);
+        setUserData(users);
       } catch (error) {
         console.error('Error fetching users:', error);
       }
